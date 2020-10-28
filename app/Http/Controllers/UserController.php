@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class UserController
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +17,7 @@ class UserController
     {
         $users = User::all();
 
-        return response()->json($users);
+        return $this->success($users);
     }
 
     /**
@@ -30,7 +30,7 @@ class UserController
     {
         $user = User::create($request->all());
 
-        return response()->json($user);
+        return $this->successNew($user);
     }
 
     /**
@@ -43,7 +43,7 @@ class UserController
     {
         $user = User::findOrFail($userId);
 
-        return response()->json($user);
+        return $this->success($user);
     }
 
     /**
@@ -58,7 +58,7 @@ class UserController
         $user = User::findOrFail($userId);
         $user->update($request->all());
 
-        return response()->json($user);
+        return $this->success($user);
     }
 
     /**
@@ -72,7 +72,6 @@ class UserController
         $user = User::findOrFail($userId);
         $user->delete();
 
-        // TODO: correct response
-        return response()->json($user);
+        return $this->successEmpty();
     }
 }

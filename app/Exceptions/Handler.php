@@ -49,6 +49,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        // TODO: Render other error types to json
+        if ($exception instanceof ModelNotFoundException && $request->wantsJson()) {
+            return response()->json([
+                'result' => 'not found',
+            ], 404, [], JSON_PRETTY_PRINT);
+        }
+
         return parent::render($request, $exception);
     }
 }

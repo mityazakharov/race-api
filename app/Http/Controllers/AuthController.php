@@ -7,8 +7,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Laravel\Lumen\Routing\Controller as BaseController;
 
-class AuthController extends Controller
+class AuthController extends BaseController
 {
     public function __construct()
     {

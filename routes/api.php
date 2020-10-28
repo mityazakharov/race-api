@@ -19,6 +19,7 @@ Route::get('/', function () use ($router) {
     return config('app.name') . ' → ' . $router->app->version();
 });
 
+// TODO: api version & throttle
 Route::post('register', 'AuthController@register');
 Route::post('login', 'AuthController@login');
 
