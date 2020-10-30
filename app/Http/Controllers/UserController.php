@@ -17,7 +17,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return $this->success($users);
+        return response()->jsonSuccess($users);
     }
 
     /**
@@ -30,7 +30,7 @@ class UserController extends Controller
     {
         $user = User::create($request->all());
 
-        return $this->successNew($user);
+        return response()->jsonSuccessNew($user);
     }
 
     /**
@@ -43,7 +43,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($userId);
 
-        return $this->success($user);
+        return response()->jsonSuccess($user);
     }
 
     /**
@@ -58,7 +58,7 @@ class UserController extends Controller
         $user = User::findOrFail($userId);
         $user->update($request->all());
 
-        return $this->success($user);
+        return response()->jsonSuccess($user);
     }
 
     /**
@@ -72,6 +72,6 @@ class UserController extends Controller
         $user = User::findOrFail($userId);
         $user->delete();
 
-        return $this->successEmpty();
+        return response()->jsonSuccessEmpty();
     }
 }
