@@ -1,8 +1,8 @@
 <?php
 
-use Monolog\Handler\NullHandler;
-
 // Original version: ../vendor/laravel/lumen-framework/config/logging.php
+
+use Monolog\Handler\NullHandler;
 
 return [
 

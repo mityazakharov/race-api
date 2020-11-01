@@ -2,11 +2,15 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\URL;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Http\ResponseFactory;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ResponseServiceProvider extends ServiceProvider
 {
@@ -33,7 +37,7 @@ class ResponseServiceProvider extends ServiceProvider
         });
 
         /**
-         * Response Json on success
+         * Response JSON on success
          */
         $factory->macro('jsonSuccess', function ($rawData) use ($factory) {
             $data = [
@@ -45,23 +49,23 @@ class ResponseServiceProvider extends ServiceProvider
         });
 
         /**
-         * Response Json on success (for newly created data)
+         * Response JSON on success (for newly created data)
          */
         $factory->macro('jsonSuccessNew', function ($rawData) use ($factory) {
             $data = [
                 'result' => 'success',
-                'data' => $rawData,
+                'data'   => $rawData,
             ];
 
             $headers = [
-                'Location' => URL::current() . '/' . $rawData->id,
+                'Location' => Request::url() . '/' . $rawData->id,
             ];
 
             return $factory->json($data, Response::HTTP_CREATED, $headers, $this->jsonOptions());
         });
 
         /**
-         * Empty response Json on success (ex. DELETE)
+         * Empty response JSON on success (ex. DELETE)
          */
         $factory->macro('jsonSuccessEmpty', function () use ($factory) {
             $data = [
@@ -71,15 +75,127 @@ class ResponseServiceProvider extends ServiceProvider
             return $factory->json($data, Response::HTTP_OK, [], $this->jsonOptions());
         });
 
-        // TODO: реализовать ответы с ошибками
-        $factory->macro('jsonFailure', function (string $message = '', $errors = []) use ($factory){
-            $error = [
+        /**
+         * Make error type from exception class
+         */
+        $factory->macro('exceptionType', function (\Exception $exception) {
+            try {
+                $className = (new \ReflectionClass($exception))->getShortName();
+                $type = Str::snake(str_replace('Exception', '', $className));
+            } catch (\ReflectionException $exception) {
+                $type = 'internal_api_error';
+            }
+
+            return $type;
+        });
+
+
+        $factory->macro('jsonException', function (\Exception $exception) {
+            switch (true) {
+                case $exception instanceof ModelNotFoundException:
+                case $exception instanceof NotFoundHttpException:
+                    return $this->jsonFailureNotFound($exception);
+
+                case $exception instanceof QueryException:
+                    return $this->jsonFailureQuery($exception);
+
+                case $exception instanceof ValidationException:
+                    return $this->jsonFailureValidation($exception);
+
+                default:
+                    return $this->jsonFailure($exception);
+            }
+        });
+
+        /**
+         * Exception JSON response
+         */
+        $factory->macro('jsonFailure', function (\Exception $exception) use ($factory) {
+            $data = [
                 'result' => 'failure',
-                'message' => $message,
-                'errors' => $errors,
+                'error'  => [
+                    'type'  => $this->exceptionType($exception),
+                    'title' => $exception->getMessage(),
+                ],
             ];
 
-            return $factory->json($error, Response::HTTP_BAD_REQUEST, [],  $this->jsonOptions());
+            $status = method_exists($exception, 'getStatusCode')
+                ? $exception->getStatusCode()
+                : Response::HTTP_INTERNAL_SERVER_ERROR;
+
+            $headers = method_exists($exception, 'getHeaders')
+                ? $exception->getHeaders()
+                : [];
+
+            return $factory->json($data, $status, $headers, $this->jsonOptions());
+        });
+
+        /**
+         * Not found exception JSON response
+         */
+        $factory->macro('jsonFailureNotFound', function (\Exception $exception) use ($factory) {
+            if ($exception instanceof ModelNotFoundException) {
+                $message = str_replace('App\\Models\\', '', $exception->getMessage());
+                $location = Str::beforeLast(Request::url(), '/');
+            } else {
+                $message = 'No API results for endpoint [' . Request::path() . ']';
+                $location = Request::root();
+            }
+
+            $data = [
+                'result' => 'failure',
+                'error'  => [
+                    'type'  => $this->exceptionType($exception),
+                    'title' => $message,
+                ],
+            ];
+
+            $status = Response::HTTP_NOT_FOUND;
+
+            $headers = ['Location' => $location];
+
+            return $factory->json($data, $status, $headers, $this->jsonOptions());
+        });
+
+        /**
+         * SQL query exception JSON response
+         */
+        $factory->macro('jsonFailureQuery', function (QueryException $exception) use ($factory) {
+            $message = Str::before(Str::after($exception->getMessage(), ': '), ':');
+
+            $data = [
+                'result' => 'failure',
+                'error'  => [
+                    'type'  => $this->exceptionType($exception),
+                    'title' => $message,
+                ],
+            ];
+
+            $status = Response::HTTP_BAD_REQUEST;
+
+            $headers = [];
+
+            return $factory->json($data, $status, $headers, $this->jsonOptions());
+        });
+
+        /**
+         * Form validation exception JSON response
+         */
+        $factory->macro('jsonFailureValidation', function (ValidationException $exception) use ($factory) {
+            $data = [
+                'result' => 'failure',
+                'error'  => [
+                    'type'    => $this->exceptionType($exception),
+                    'title'   => $exception->getMessage(),
+                    'invalid' => $exception->errors(),
+                ],
+            ];
+
+            $status = Response::HTTP_UNPROCESSABLE_ENTITY;
+
+            $headers = [];
+
+            return $factory->json($data, $status, $headers, $this->jsonOptions());
         });
     }
 }

@@ -28,6 +28,10 @@ class UserController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        $this->validate($request, [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users',
+        ]);
         $user = User::create($request->all());
 
         return response()->jsonSuccessNew($user);
@@ -55,6 +59,11 @@ class UserController extends Controller
      */
     public function update(Request $request, int $userId): JsonResponse
     {
+        $this->validate($request, [
+            'name' => 'string|max:255',
+            'email' => 'email|max:255|unique:users,email,' . $userId,
+        ]);
+
         $user = User::findOrFail($userId);
         $user->update($request->all());
 
