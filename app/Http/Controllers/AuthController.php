@@ -24,10 +24,9 @@ class AuthController extends Controller
      */
     public function register(Request $request): JsonResponse
     {
-        //validate incoming request
         $this->validate($request, [
-            'name' => 'required|string',
-            'email' => 'required|string|unique:users',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|string|max:255|unique:users',
             'password' => 'required|confirmed',
         ]);
 
@@ -38,18 +37,10 @@ class AuthController extends Controller
             $user->password = app('hash')->make($request->input('password'));
             $user->save();
 
-            return response()->json([
-                'entity' => 'users',
-                'action' => 'create',
-                'result' => 'success'
-            ], 201);
+            return response()->jsonSuccessNew($user);
 
-        } catch (\Exception $e) {
-            return response()->json([
-                'entity' => 'users',
-                'action' => 'create',
-                'result' => 'failed'
-            ], 409);
+        } catch (\Exception $exception) {
+            return response()->jsonException($exception);
         }
     }
 
@@ -63,17 +54,18 @@ class AuthController extends Controller
      */
     public function login(Auth $auth, Request $request): JsonResponse
     {
-        //validate incoming request
         $this->validate($request, [
-            'email' => 'required|string',
-            'password' => 'required|string',
+            'email' => 'required|string|max:255',
+            'password' => 'required|string|max:255',
         ]);
 
         $credentials = $request->only(['email', 'password']);
 
         if (! $token = $auth->attempt($credentials)) {
+            // TODO: Throw exception
             return response()->json(['message' => 'Unauthorized'], 401);
         }
+
         return $this->respondWithToken($token);
     }
 
@@ -85,7 +77,7 @@ class AuthController extends Controller
      */
     public function me(Auth $auth): JsonResponse
     {
-        return response()->json($auth->user());
+        return response()->jsonSuccess($auth->user());
     }
 
     /**
@@ -109,7 +101,8 @@ class AuthController extends Controller
     {
         $auth->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        // TODO: Empty response?
+        return response()->jsonSuccess(['message' => 'Successfully logged out']);
     }
 
     /**
@@ -121,10 +114,11 @@ class AuthController extends Controller
      */
     protected function respondWithToken(string $token): JsonResponse
     {
-        return response()->json([
+        // TODO: Set expires_in
+        return response()->jsonSuccess([
             'token' => $token,
             'token_type' => 'bearer',
             'expires_in' => null
-        ], 200);
+        ]);
     }
 }

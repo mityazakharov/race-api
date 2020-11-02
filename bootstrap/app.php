@@ -71,13 +71,10 @@ $app->configure('app');
 |
 */
 
-// $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
-// ]);
-
- $app->routeMiddleware([
-     'auth' => App\Http\Middleware\Authenticate::class,
- ]);
+$app->routeMiddleware([
+    'auth'     => App\Http\Middleware\Authenticate::class,
+    'throttle' => App\Http\Middleware\ThrottleRequests::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -113,9 +110,12 @@ $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 */
 
 $app->router->group([
-    'namespace' => 'App\Http\Controllers',
+    'as'         => 'api.v1.',
+    'prefix'     => 'v1',
+    'middleware' => ['throttle:120,1'],
+    'namespace'  => 'App\Http\Controllers',
 ], function ($router) {
-    require __DIR__ . '/../routes/api.php';
+    require __DIR__ . '/../routes/api.v1.php';
 });
 
 return $app;
