@@ -81,6 +81,7 @@ class UserController extends Controller
         $user = User::findOrFail($userId);
         $user->delete();
 
+        // TODO: Empty response?
         return response()->jsonSuccessEmpty();
     }
 }

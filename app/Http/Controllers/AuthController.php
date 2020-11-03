@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\AuthorizationException;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Auth\Factory as Auth;
@@ -51,6 +52,7 @@ class AuthController extends Controller
      * @param Request $request
      * @return JsonResponse
      * @throws ValidationException
+     * @throws AuthorizationException
      */
     public function login(Auth $auth, Request $request): JsonResponse
     {
@@ -62,8 +64,7 @@ class AuthController extends Controller
         $credentials = $request->only(['email', 'password']);
 
         if (! $token = $auth->attempt($credentials)) {
-            // TODO: Throw exception
-            return response()->json(['message' => 'Unauthorized'], 401);
+            throw new AuthorizationException();
         }
 
         return $this->respondWithToken($token);
@@ -114,11 +115,10 @@ class AuthController extends Controller
      */
     protected function respondWithToken(string $token): JsonResponse
     {
-        // TODO: Set expires_in
         return response()->jsonSuccess([
             'token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => null
+            'expires_in' => auth()->factory()->getTTL() * 60,
         ]);
     }
 }
