@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Team;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class UserController extends Controller
+class TeamController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +16,9 @@ class UserController extends Controller
      */
     public function index(): JsonResponse
     {
-        $users = User::all();
+        $teams = Team::all();
 
-        return response()->jsonSuccess($users);
+        return response()->jsonSuccess($teams);
     }
 
     /**
@@ -31,60 +31,59 @@ class UserController extends Controller
     public function store(Request $request): JsonResponse
     {
         $this->validate($request, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users',
+            'title' => 'required|string|max:255|unique:teams',
         ]);
-        $user = User::create($request->all());
+        $team = Team::create($request->all());
 
-        return response()->jsonSuccessNew($user);
+        return response()->jsonSuccessNew($team);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param int $userId
+     * @param int $teamId
      * @return JsonResponse
      */
-    public function show(int $userId): JsonResponse
+    public function show(int $teamId): JsonResponse
     {
-        $user = User::findOrFail($userId);
+        $team = Team::findOrFail($teamId);
 
-        return response()->jsonSuccess($user);
+        return response()->jsonSuccess($team);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param int $userId
+     * @param int $teamId
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function update(Request $request, int $userId): JsonResponse
+    public function update(Request $request, int $teamId): JsonResponse
     {
         $this->validate($request, [
-            'name' => 'string|max:255',
-            'email' => 'email|max:255|unique:users,email,' . $userId,
+            'title' => 'string|max:255|unique:teams,title,' . $teamId,
         ]);
 
-        $user = User::findOrFail($userId);
-        $user->update($request->all());
+        $team = Team::findOrFail($teamId);
+        $team->update($request->all());
 
-        return response()->jsonSuccess($user);
+        return response()->jsonSuccess($team);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $userId
+     * @param int $teamId
      * @return JsonResponse
      */
-    public function destroy(int $userId): JsonResponse
+    public function destroy(int $teamId): JsonResponse
     {
-        $user = User::findOrFail($userId);
-        $user->delete();
+        $team = Team::findOrFail($teamId);
+        $team->delete();
 
         // TODO: Empty response?
         return response()->jsonSuccessEmpty();
     }
+
 }

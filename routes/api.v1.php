@@ -20,7 +20,7 @@ $router->get('/', function () use ($router) {
 $router->post('register', 'AuthController@register');
 $router->post('login', 'AuthController@login');
 
-$router->group(['middleware' => 'auth'], function ($router) {
+$router->group(['middleware' => 'auth'], function ()  use ($router) {
     // Auth
     $router->post('me', 'AuthController@me');
     $router->post('refresh', 'AuthController@refresh');
@@ -32,4 +32,11 @@ $router->group(['middleware' => 'auth'], function ($router) {
     $router->get('users/{userId}', 'UserController@show');
     $router->put('users/{userId}', 'UserController@update');
     $router->delete('users/{userId}', 'UserController@destroy');
+
+    // Team
+    $router->get('teams', 'TeamController@index');
+    $router->post('teams', 'TeamController@store');
+    $router->get('teams/{teamId}', 'TeamController@show');
+    $router->put('teams/{teamId}', 'TeamController@update');
+    $router->delete('teams/{teamId}', 'TeamController@destroy');
 });
