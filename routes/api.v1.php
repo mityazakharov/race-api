@@ -39,4 +39,14 @@ $router->group(['middleware' => 'auth'], function ()  use ($router) {
     $router->get('teams/{teamId}', 'TeamController@show');
     $router->put('teams/{teamId}', 'TeamController@update');
     $router->delete('teams/{teamId}', 'TeamController@destroy');
+
+    // Athlete
+    $router->get('athletes/gender', 'AthleteController@gender');
+    $router->get('athletes/rates', 'AthleteController@rates');
+    $router->get('athletes', 'AthleteController@index');
+    $router->post('athletes', 'AthleteController@store');
+    $router->get('athletes/{athleteId}', 'AthleteController@show');
+    $router->put('athletes/{athleteId}', 'AthleteController@update');
+    $router->delete('athletes/{athleteId}', 'AthleteController@destroy');
+
 });
