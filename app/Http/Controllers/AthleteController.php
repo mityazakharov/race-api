@@ -16,9 +16,9 @@ class AthleteController extends Controller
      */
     public function index(): JsonResponse
     {
-        $users = Athlete::all();
+        $athletes = Athlete::all();
 
-        return response()->jsonSuccess($users);
+        return response()->jsonSuccess($athletes);
     }
 
     /**

@@ -49,4 +49,10 @@ $router->group(['middleware' => 'auth'], function ()  use ($router) {
     $router->put('athletes/{athleteId}', 'AthleteController@update');
     $router->delete('athletes/{athleteId}', 'AthleteController@destroy');
 
+    // Group
+    $router->get('groups', 'GroupController@index');
+    $router->post('groups', 'GroupController@store');
+    $router->get('groups/{groupId}', 'GroupController@show');
+    $router->put('groups/{groupId}', 'GroupController@update');
+    $router->delete('groups/{groupId}', 'GroupController@destroy');
 });

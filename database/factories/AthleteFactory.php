@@ -22,7 +22,7 @@ class AthleteFactory extends Factory
      */
     public function definition(): array
     {
-        $teams = Team::all()->pluck('id');
+        $teams = Team::all()->pluck('id')->toArray();
 
         return [
             'first_name' => $this->faker->firstName(),
