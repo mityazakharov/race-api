@@ -55,4 +55,11 @@ $router->group(['middleware' => 'auth'], function ()  use ($router) {
     $router->get('groups/{groupId}', 'GroupController@show');
     $router->put('groups/{groupId}', 'GroupController@update');
     $router->delete('groups/{groupId}', 'GroupController@destroy');
+
+    // Season
+    $router->get('seasons', 'SeasonController@index');
+    $router->post('seasons', 'SeasonController@store');
+    $router->get('seasons/{seasonId}', 'SeasonController@show');
+    $router->put('seasons/{seasonId}', 'SeasonController@update');
+    $router->delete('seasons/{seasonId}', 'SeasonController@destroy');
 });
