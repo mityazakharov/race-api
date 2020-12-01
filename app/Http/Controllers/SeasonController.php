@@ -30,10 +30,13 @@ class SeasonController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        $min = config('api.season_year_min');
+        $max = config('api.season_year_max');
+
         $this->validate($request, [
             'title'        => 'required|string|max:255',
-            'year_min'     => 'required|integer|min:1990|max:2030|lt:year_max',
-            'year_max'     => 'required|integer|min:1990|max:2030|gt:year_min',
+            'year_min'     => 'required|integer|lt:year_max|min:' . $min . '|max:' . $max,
+            'year_max'     => 'required|integer|gt:year_min|min:' . $min . '|max:' . $max,
             'is_odd_group' => 'required|boolean',
         ]);
 
@@ -65,10 +68,13 @@ class SeasonController extends Controller
      */
     public function update(Request $request, int $seasonId): JsonResponse
     {
+        $min = config('api.season_year_min');
+        $max = config('api.season_year_max');
+
         $this->validate($request, [
             'title'        => 'string|max:255',
-            'year_min'     => 'integer|min:1990|max:2030|lt:year_max',
-            'year_max'     => 'integer|min:1990|max:2030|gt:year_min',
+            'year_min'     => 'integer|lt:year_max|min:' . $min . '|max:' . $max,
+            'year_max'     => 'integer|gt:year_min|min:' . $min . '|max:' . $max,
             'is_odd_group' => 'boolean',
         ]);
 
