@@ -28,6 +28,9 @@ class Season extends Model
      * @var array
      */
     protected $casts = [
+        'title'        => 'string',
+        'year_min'     => 'integer',
+        'year_max'     => 'integer',
         'is_odd_group' => 'boolean',
     ];
 }
