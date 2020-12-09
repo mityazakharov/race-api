@@ -27,7 +27,7 @@ class AthleteFactory extends Factory
         return [
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
-            'year' => $this->faker->numberBetween(1990, 2030),
+            'year' => $this->faker->numberBetween(config('api.birth_year_min'), config('api.birth_year_max')),
             'gender' => $this->faker->randomElement(array_keys(Athlete::gender())),
             'team_id' => $this->faker->randomElement($teams),
             'rate' => $this->faker->randomElement(Athlete::rates()),
