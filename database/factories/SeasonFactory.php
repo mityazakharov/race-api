@@ -21,7 +21,7 @@ class SeasonFactory extends Factory
      */
     public function definition(): array
     {
-        $year_min = $this->faker->numberBetween(1990, 2030);
+        $year_min = $this->faker->numberBetween(config('api.season_year_min'), config('api.season_year_max') - 1);
         $year_max = $year_min + 1;
 
         return [

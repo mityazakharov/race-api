@@ -12,27 +12,11 @@ trait CreatesSeason
     public $seasonIds = [];
 
     /**
-     * @param ?string $title
-     * @param ?int $yearMin
-     * @param ?int $yearMax
-     * @param ?bool $isOddGroup
-     *
      * @return Season
      */
-    public function createSeason(
-        ?string $title = '2010-2011',
-        ?int $yearMin = 2010,
-        ?int $yearMax = 2011,
-        ?bool $isOddGroup = false
-    ): Season
+    public function createSeason(): Season
     {
-        $season = Season::create([
-            'title'        => $title,
-            'year_min'     => $yearMin,
-            'year_max'     => $yearMax,
-            'is_odd_group' => $isOddGroup,
-        ]);
-
+        $season = Season::factory()->create();
         $this->seasonIds[] = $season->id;
 
         return $season;
