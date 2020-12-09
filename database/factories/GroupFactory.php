@@ -22,7 +22,7 @@ class GroupFactory extends Factory
      */
     public function definition(): array
     {
-        $year_min = $this->faker->numberBetween(1990, 2030);
+        $year_min = $this->faker->numberBetween(config('api.birth_year_min'), config('api.birth_year_max') - 1);
         $year_max = $year_min + 1;
         $gender = $this->faker->randomElement(array_keys(Athlete::gender()));
 

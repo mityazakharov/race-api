@@ -1,22 +1,22 @@
 <?php
 
-namespace Http\SeasonController;
+namespace Http\GroupController;
 
-use App\Models\Season;
+use App\Models\Group;
 use Exception;
 use Http\HttpTest;
-use Traits\Creates\CreatesSeason;
+use Traits\Creates\CreatesGroup;
 
-class SeasonControllerTest extends HttpTest
+class GroupControllerTest extends HttpTest
 {
-    use CreatesSeason;
+    use CreatesGroup;
 
-    const URL = '/v1/seasons/%s';
+    const URL = '/v1/groups/%s';
 
     /**
-     * @var Season
+     * @var Group
      */
-    protected $season;
+    protected $group;
 
     /**
      * Runs before each test
@@ -26,7 +26,7 @@ class SeasonControllerTest extends HttpTest
     protected function setUp(): void
     {
         parent::setUp();
-        $this->season = $this->createSeason();
+        $this->group = $this->createGroup();
     }
 
     /**
@@ -36,7 +36,7 @@ class SeasonControllerTest extends HttpTest
      */
     protected function tearDown(): void
     {
-        $this->deleteSeasons();
+        $this->deleteGroups();
         parent::tearDown();
     }
 }
