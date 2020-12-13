@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
-class UserController extends Controller
+class UserController
 {
     /**
      * Display a listing of the resource.
@@ -24,16 +24,12 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param CreateUserRequest $request
+     *
      * @return JsonResponse
-     * @throws ValidationException
      */
-    public function store(Request $request): JsonResponse
+    public function store(CreateUserRequest $request): JsonResponse
     {
-        $this->validate($request, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users',
-        ]);
         $user = User::create($request->all());
 
         return response()->jsonSuccessNew($user);
@@ -55,18 +51,13 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param UpdateUserRequest $request
      * @param int $userId
+     *
      * @return JsonResponse
-     * @throws ValidationException
      */
-    public function update(Request $request, int $userId): JsonResponse
+    public function update(UpdateUserRequest $request, int $userId): JsonResponse
     {
-        $this->validate($request, [
-            'name' => 'string|max:255',
-            'email' => 'email|max:255|unique:users,email,' . $userId,
-        ]);
-
         $user = User::findOrFail($userId);
         $user->update($request->all());
 

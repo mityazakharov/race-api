@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateTeamRequest;
+use App\Http\Requests\UpdateTeamRequest;
 use App\Models\Team;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
-class TeamController extends Controller
+class TeamController
 {
     /**
      * Display a listing of the resource.
@@ -24,15 +24,12 @@ class TeamController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param CreateTeamRequest $request
+     *
      * @return JsonResponse
-     * @throws ValidationException
      */
-    public function store(Request $request): JsonResponse
+    public function store(CreateTeamRequest $request): JsonResponse
     {
-        $this->validate($request, [
-            'title' => 'required|string|max:255|unique:teams',
-        ]);
         $team = Team::create($request->all());
 
         return response()->jsonSuccessNew($team);
@@ -54,17 +51,13 @@ class TeamController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param UpdateTeamRequest $request
      * @param int $teamId
+     *
      * @return JsonResponse
-     * @throws ValidationException
      */
-    public function update(Request $request, int $teamId): JsonResponse
+    public function update(UpdateTeamRequest $request, int $teamId): JsonResponse
     {
-        $this->validate($request, [
-            'title' => 'string|max:255|unique:teams,title,' . $teamId,
-        ]);
-
         $team = Team::findOrFail($teamId);
         $team->update($request->all());
 

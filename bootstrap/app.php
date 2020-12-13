@@ -100,6 +100,9 @@ $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 // JSON Web Token Authentication
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 
+// Form Request
+$app->register(Pearl\RequestValidate\RequestServiceProvider::class);
+
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes

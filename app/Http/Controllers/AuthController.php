@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\AuthorizationException;
+use App\Http\Requests\LoginAuthRequest;
+use App\Http\Requests\RegisterAuthRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Auth\Factory as Auth;
-use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -19,18 +19,12 @@ class AuthController extends Controller
     /**
      * Store a new user.
      *
-     * @param Request $request
+     * @param RegisterAuthRequest $request
+     *
      * @return JsonResponse
-     * @throws ValidationException
      */
-    public function register(Request $request): JsonResponse
+    public function register(RegisterAuthRequest $request): JsonResponse
     {
-        $this->validate($request, [
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|string|max:255|unique:users',
-            'password' => 'required|confirmed',
-        ]);
-
         try {
             $user = new User();
             $user->name = $request->input('name');
@@ -49,18 +43,13 @@ class AuthController extends Controller
      * Get a JWT via given credentials.
      *
      * @param Auth $auth
-     * @param Request $request
+     * @param LoginAuthRequest $request
+     *
      * @return JsonResponse
-     * @throws ValidationException
      * @throws AuthorizationException
      */
-    public function login(Auth $auth, Request $request): JsonResponse
+    public function login(Auth $auth, LoginAuthRequest $request): JsonResponse
     {
-        $this->validate($request, [
-            'email' => 'required|string|max:255',
-            'password' => 'required|string|max:255',
-        ]);
-
         $credentials = $request->only(['email', 'password']);
 
         if (! $token = $auth->attempt($credentials)) {

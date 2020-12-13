@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Athlete;
+use App\Http\Requests\CreateGroupRequest;
+use App\Http\Requests\UpdateGroupRequest;
 use App\Models\Group;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
-class GroupController extends Controller
+class GroupController
 {
     /**
      * Display a listing of the resource.
@@ -25,20 +24,12 @@ class GroupController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param CreateGroupRequest $request
+     *
      * @return JsonResponse
-     * @throws ValidationException
      */
-    public function store(Request $request): JsonResponse
+    public function store(CreateGroupRequest $request): JsonResponse
     {
-        $this->validate($request, [
-            'title'    => 'required|string|max:255',
-            'year_min' => 'required|integer|min:1990|max:2030|lt:year_max',
-            'year_max' => 'required|integer|min:1990|max:2030|gt:year_min',
-            'gender'   => 'required|in:' . implode(',', array_keys(Athlete::gender())),
-            'is_odd'   => 'boolean',
-        ]);
-
         $group = Group::create($request->all());
 
         return response()->jsonSuccessNew($group);
@@ -60,21 +51,13 @@ class GroupController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param UpdateGroupRequest $request
      * @param int $groupId
+     *
      * @return JsonResponse
-     * @throws ValidationException
      */
-    public function update(Request $request, int $groupId): JsonResponse
+    public function update(UpdateGroupRequest $request, int $groupId): JsonResponse
     {
-        $this->validate($request, [
-            'title'    => 'string|max:255',
-            'year_min' => 'integer|min:1990|max:2030|lt:year_max',
-            'year_max' => 'integer|min:1990|max:2030|gt:year_min',
-            'gender'   => 'in:' . implode(',', array_keys(Athlete::gender())),
-            'is_odd'   => 'boolean',
-        ]);
-
         $group = Group::findOrFail($groupId);
         $group->update($request->all());
 

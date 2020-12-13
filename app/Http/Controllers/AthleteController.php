@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateAthleteRequest;
+use App\Http\Requests\UpdateAthleteRequest;
 use App\Models\Athlete;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
-class AthleteController extends Controller
+class AthleteController
 {
     /**
      * Display a listing of the resource.
@@ -24,21 +24,12 @@ class AthleteController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param CreateAthleteRequest $request
+     *
      * @return JsonResponse
-     * @throws ValidationException
      */
-    public function store(Request $request): JsonResponse
+    public function store(CreateAthleteRequest $request): JsonResponse
     {
-        $this->validate($request, [
-            'first_name' => 'required|string|max:255',
-            'last_name'  => 'required|string|max:255',
-            'year'       => 'required|integer|min:1990|max:2030',
-            'gender'     => 'required|in:' . implode(',', array_keys(Athlete::gender())),
-            'team_id'    => 'required|exists:teams,id',
-            'rate'       => 'required|in:' . implode(',', Athlete::rates()),
-        ]);
-
         $athlete = Athlete::create($request->all());
 
         return response()->jsonSuccessNew($athlete);
@@ -60,22 +51,13 @@ class AthleteController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param UpdateAthleteRequest $request
      * @param int $athleteId
+     *
      * @return JsonResponse
-     * @throws ValidationException
      */
-    public function update(Request $request, int $athleteId): JsonResponse
+    public function update(UpdateAthleteRequest $request, int $athleteId): JsonResponse
     {
-        $this->validate($request, [
-            'first_name' => 'string|max:255',
-            'last_name'  => 'string|max:255',
-            'year'       => 'integer|min:1990|max:2030',
-            'gender'     => 'in:' . implode(',', array_keys(Athlete::gender())),
-            'team_id'    => 'exists:teams,id',
-            'rate'       => 'in:' . implode(',', Athlete::rates()),
-        ]);
-
         $athlete = Athlete::findOrFail($athleteId);
         $athlete->update($request->all());
 
