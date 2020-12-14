@@ -22,22 +22,26 @@ abstract class HttpTest extends TestCase
     }
 
     /**
-     * @param ?int $userId
+     * @param int $userId
      *
      * @return array
      */
-    public function getAuthHeaders(?int $userId = null): array
+    public function getAuthHeaders(int $userId = self::AUTH_USER_ID): array
     {
-        if (is_null($userId)) {
-            $userId = self::AUTH_USER_ID;
-        }
+        $headers = $this->getHeaders();
+        $headers['Authorization'] = 'Bearer ' . $this->getUserToken($userId);
 
+        return $headers;
+    }
+
+    public function getHeaders(): array
+    {
         return [
-            'Authorization' => 'Bearer ' . $this->getUserToken($userId),
             'Accept'        => 'Application/json',
             'Content-Type'  => 'Application/json',
         ];
     }
+
 
     /**
      * @param int $userId

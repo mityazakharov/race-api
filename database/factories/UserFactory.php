@@ -26,4 +26,16 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail,
         ];
     }
+
+    /**
+     * @return UserFactory
+     */
+    public function withPassword(): UserFactory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'password' => $this->faker->password(),
+            ];
+        });
+    }
 }

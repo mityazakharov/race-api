@@ -17,49 +17,63 @@ $router->get('/', function () use ($router) {
     return config('app.name') . ' → ' . $router->app->version();
 });
 
-$router->post('register', 'AuthController@register');
-$router->post('login', 'AuthController@login');
+// Auth
+$router->group(['prefix' => 'auth'], function () use ($router) {
+    $router->post('register', 'AuthController@register');
+    $router->post('login', 'AuthController@login');
+
+    $router->group(['middleware' => 'auth'], function () use ($router) {
+        $router->get('me', 'AuthController@me');
+        $router->post('refresh', 'AuthController@refresh');
+        $router->post('logout', 'AuthController@logout');
+    });
+});
 
 $router->group(['middleware' => 'auth'], function ()  use ($router) {
-    // Auth
-    $router->post('me', 'AuthController@me');
-    $router->post('refresh', 'AuthController@refresh');
-    $router->post('logout', 'AuthController@logout');
-
     // User
-    $router->get('users', 'UserController@index');
-    $router->post('users', 'UserController@store');
-    $router->get('users/{userId}', 'UserController@show');
-    $router->put('users/{userId}', 'UserController@update');
-    $router->delete('users/{userId}', 'UserController@destroy');
+    $router->group(['prefix' => 'users'], function () use ($router) {
+        $router->get('', 'UserController@index');
+        $router->post('', 'UserController@store');
+        $router->get('/{userId}', 'UserController@show');
+        $router->put('/{userId}', 'UserController@update');
+        $router->delete('/{userId}', 'UserController@destroy');
+    });
 
     // Team
-    $router->get('teams', 'TeamController@index');
-    $router->post('teams', 'TeamController@store');
-    $router->get('teams/{teamId}', 'TeamController@show');
-    $router->put('teams/{teamId}', 'TeamController@update');
-    $router->delete('teams/{teamId}', 'TeamController@destroy');
+    $router->group(['prefix' => 'teams'], function () use ($router) {
+        $router->get('', 'TeamController@index');
+        $router->post('', 'TeamController@store');
+        $router->get('/{teamId}', 'TeamController@show');
+        $router->put('/{teamId}', 'TeamController@update');
+        $router->delete('/{teamId}', 'TeamController@destroy');
+    });
 
     // Athlete
-    $router->get('athletes/gender', 'AthleteController@gender');
-    $router->get('athletes/rates', 'AthleteController@rates');
-    $router->get('athletes', 'AthleteController@index');
-    $router->post('athletes', 'AthleteController@store');
-    $router->get('athletes/{athleteId}', 'AthleteController@show');
-    $router->put('athletes/{athleteId}', 'AthleteController@update');
-    $router->delete('athletes/{athleteId}', 'AthleteController@destroy');
+    $router->group(['prefix' => 'athletes'], function () use ($router) {
+        $router->get('/gender', 'AthleteController@gender');
+        $router->get('/rates', 'AthleteController@rates');
+        $router->get('', 'AthleteController@index');
+        $router->post('', 'AthleteController@store');
+        $router->get('/{athleteId}', 'AthleteController@show');
+        $router->put('/{athleteId}', 'AthleteController@update');
+        $router->delete('/{athleteId}', 'AthleteController@destroy');
+    });
 
     // Group
-    $router->get('groups', 'GroupController@index');
-    $router->post('groups', 'GroupController@store');
-    $router->get('groups/{groupId}', 'GroupController@show');
-    $router->put('groups/{groupId}', 'GroupController@update');
-    $router->delete('groups/{groupId}', 'GroupController@destroy');
+    $router->group(['prefix' => 'groups'], function () use ($router) {
+        $router->get('', 'GroupController@index');
+        $router->post('', 'GroupController@store');
+        $router->get('/{groupId}', 'GroupController@show');
+        $router->put('/{groupId}', 'GroupController@update');
+        $router->delete('/{groupId}', 'GroupController@destroy');
+    });
 
     // Season
-    $router->get('seasons', 'SeasonController@index');
-    $router->post('seasons', 'SeasonController@store');
-    $router->get('seasons/{seasonId}', 'SeasonController@show');
-    $router->put('seasons/{seasonId}', 'SeasonController@update');
-    $router->delete('seasons/{seasonId}', 'SeasonController@destroy');
+    $router->group(['prefix' => 'seasons'], function () use ($router) {
+        $router->get('', 'SeasonController@index');
+        $router->post('', 'SeasonController@store');
+        $router->get('/{seasonId}', 'SeasonController@show');
+        $router->put('/{seasonId}', 'SeasonController@update');
+        $router->delete('/{seasonId}', 'SeasonController@destroy');
+    });
 });
