@@ -7,7 +7,7 @@ use Exception;
 use Http\HttpTest;
 use Traits\Creates\CreatesSeason;
 
-class SeasonControllerTest extends HttpTest
+abstract class SeasonControllerTest extends HttpTest
 {
     use CreatesSeason;
 

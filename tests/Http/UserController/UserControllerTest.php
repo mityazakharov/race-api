@@ -7,7 +7,7 @@ use Exception;
 use Http\HttpTest;
 use Traits\Creates\CreatesUser;
 
-class UserControllerTest extends HttpTest
+abstract class UserControllerTest extends HttpTest
 {
     use CreatesUser;
 

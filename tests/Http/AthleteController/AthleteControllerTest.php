@@ -9,7 +9,7 @@ use Http\HttpTest;
 use Traits\Creates\CreatesAthlete;
 use Traits\Creates\CreatesTeam;
 
-class AthleteControllerTest extends HttpTest
+abstract class AthleteControllerTest extends HttpTest
 {
     use CreatesAthlete, CreatesTeam;
 

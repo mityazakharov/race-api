@@ -7,7 +7,7 @@ use Exception;
 use Http\HttpTest;
 use Traits\Creates\CreatesGroup;
 
-class GroupControllerTest extends HttpTest
+abstract class GroupControllerTest extends HttpTest
 {
     use CreatesGroup;
 

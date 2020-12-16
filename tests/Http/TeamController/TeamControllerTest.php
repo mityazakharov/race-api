@@ -7,7 +7,7 @@ use Exception;
 use Http\HttpTest;
 use Traits\Creates\CreatesTeam;
 
-class TeamControllerTest extends HttpTest
+abstract class TeamControllerTest extends HttpTest
 {
     use CreatesTeam;
 
