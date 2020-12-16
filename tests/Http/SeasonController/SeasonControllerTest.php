@@ -11,7 +11,7 @@ abstract class SeasonControllerTest extends HttpTest
 {
     use CreatesSeason;
 
-    const URL = '/v1/seasons/%s';
+    const URL = '/seasons/%s';
 
     /**
      * @var Season

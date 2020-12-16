@@ -11,7 +11,7 @@ abstract class TeamControllerTest extends HttpTest
 {
     use CreatesTeam;
 
-    const URL = '/v1/teams/%s';
+    const URL = '/teams/%s';
 
     /**
      * @var Team

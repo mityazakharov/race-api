@@ -24,10 +24,13 @@ class CreateGroupRequest extends RequestAbstract
      */
     public function rules(): array
     {
+        $min = config('api.birth_year_min');
+        $max = config('api.birth_year_max');
+
         return [
             'title'    => 'required|string|max:255',
-            'year_min' => 'required|integer|min:1990|max:2030|lt:year_max',
-            'year_max' => 'required|integer|min:1990|max:2030|gt:year_min',
+            'year_min' => 'required|integer|min:' . $min . '|max:' . $max . '|lt:year_max',
+            'year_max' => 'required|integer|min:' . $min . '|max:' . $max . '|gt:year_min',
             'gender'   => 'required|in:' . implode(',', array_keys(Athlete::gender())),
             'is_odd'   => 'boolean',
         ];

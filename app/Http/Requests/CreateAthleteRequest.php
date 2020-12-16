@@ -24,10 +24,13 @@ class CreateAthleteRequest extends RequestAbstract
      */
     public function rules(): array
     {
+        $min = config('api.birth_year_min');
+        $max = config('api.birth_year_max');
+
         return [
             'first_name' => 'required|string|max:255',
             'last_name'  => 'required|string|max:255',
-            'year'       => 'required|integer|min:1990|max:2030',
+            'year'       => 'required|integer|min:' . $min . '|max:' . $max,
             'gender'     => 'required|in:' . implode(',', array_keys(Athlete::gender())),
             'team_id'    => 'required|exists:teams,id',
             'rate'       => 'required|in:' . implode(',', Athlete::rates()),

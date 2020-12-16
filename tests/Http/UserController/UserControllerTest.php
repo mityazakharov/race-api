@@ -11,7 +11,7 @@ abstract class UserControllerTest extends HttpTest
 {
     use CreatesUser;
 
-    const URL = '/v1/users/%s';
+    const URL = '/users/%s';
 
     /**
      * @var User

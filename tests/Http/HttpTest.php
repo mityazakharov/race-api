@@ -11,6 +11,11 @@ abstract class HttpTest extends TestCase
      */
     const AUTH_USER_ID = 1;
 
+    /** @var
+     * string
+     */
+    const API_VERSION = '/v1';
+
     /**
      * @param ?string $id
      *
@@ -18,7 +23,7 @@ abstract class HttpTest extends TestCase
      */
     protected function buildUrl(?string $id = ''): string
     {
-        return sprintf(static::URL, $id);
+        return sprintf(self::API_VERSION . static::URL, $id);
     }
 
     /**

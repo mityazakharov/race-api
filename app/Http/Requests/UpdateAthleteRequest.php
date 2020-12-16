@@ -24,10 +24,13 @@ class UpdateAthleteRequest extends RequestAbstract
      */
     public function rules(): array
     {
+        $min = config('api.birth_year_min');
+        $max = config('api.birth_year_max');
+
         return [
             'first_name' => 'string|max:255',
             'last_name'  => 'string|max:255',
-            'year'       => 'integer|min:1990|max:2030',
+            'year'       => 'integer|min:' . $min . '|max:' . $max,
             'gender'     => 'in:' . implode(',', array_keys(Athlete::gender())),
             'team_id'    => 'exists:teams,id',
             'rate'       => 'in:' . implode(',', Athlete::rates()),

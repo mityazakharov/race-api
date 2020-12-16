@@ -11,7 +11,7 @@ abstract class GroupControllerTest extends HttpTest
 {
     use CreatesGroup;
 
-    const URL = '/v1/groups/%s';
+    const URL = '/groups/%s';
 
     /**
      * @var Group

@@ -13,7 +13,7 @@ abstract class AthleteControllerTest extends HttpTest
 {
     use CreatesAthlete, CreatesTeam;
 
-    const URL = '/v1/athletes/%s';
+    const URL = '/athletes/%s';
 
     /**
      * @var Team

@@ -24,10 +24,13 @@ class UpdateGroupRequest extends RequestAbstract
      */
     public function rules(): array
     {
+        $min = config('api.birth_year_min');
+        $max = config('api.birth_year_max');
+
         return [
             'title'    => 'string|max:255',
-            'year_min' => 'integer|min:1990|max:2030|lt:year_max',
-            'year_max' => 'integer|min:1990|max:2030|gt:year_min',
+            'year_min' => 'integer|min:' . $min . '|max:' . $max . '|lt:year_max',
+            'year_max' => 'integer|min:' . $min . '|max:' . $max . '|gt:year_min',
             'gender'   => 'in:' . implode(',', array_keys(Athlete::gender())),
             'is_odd'   => 'boolean',
         ];

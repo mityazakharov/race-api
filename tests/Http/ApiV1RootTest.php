@@ -1,9 +1,10 @@
 <?php
 
-use Laravel\Lumen\Testing\DatabaseMigrations;
-use Laravel\Lumen\Testing\DatabaseTransactions;
+namespace Http;
 
-class ApiRootTest extends TestCase
+use TestCase;
+
+class ApiV1RootTest extends TestCase
 {
     /**
      * A basic test example.
@@ -12,7 +13,7 @@ class ApiRootTest extends TestCase
      */
     public function testRootResponse()
     {
-        $this->get('/');
+        $this->get('/v1/');
 
         $this->assertEquals(
             config('app.name') . ' → ' . $this->app->version(),
