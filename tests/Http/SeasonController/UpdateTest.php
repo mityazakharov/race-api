@@ -7,8 +7,8 @@ class UpdateTest extends SeasonControllerTest
     public function testUpdate(): void
     {
         $params = [
-            ['title' => 'NEW TITLE'],
-            ['is_odd_group' => true],
+            'title' => 'NEW TITLE',
+            'is_odd_group' => true,
         ];
 
         $this->json('PUT', $this->buildUrl($this->season->id), $params, $this->getAuthHeaders())

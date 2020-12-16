@@ -1,16 +1,12 @@
 <?php
 
-namespace Http\TeamController;
+namespace Http\DisciplineController;
 
-class UpdateTest extends TeamControllerTest
+class ShowTest extends DisciplineControllerTest
 {
-    public function testUpdate(): void
+    public function testShow(): void
     {
-        $params = [
-            'title' => 'NEW TITLE',
-        ];
-
-        $this->json('PUT', $this->buildUrl($this->team->id), $params, $this->getAuthHeaders())
+        $this->json('GET', $this->buildUrl($this->discipline->id), [], $this->getAuthHeaders())
             ->seeJsonStructure(
                 [
                     'result',

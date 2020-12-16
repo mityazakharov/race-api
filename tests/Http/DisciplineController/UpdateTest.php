@@ -1,17 +1,16 @@
 <?php
 
-namespace Http\UserController;
+namespace Http\DisciplineController;
 
-class UpdateTest extends UserControllerTest
+class UpdateTest extends DisciplineControllerTest
 {
     public function testUpdate(): void
     {
         $params = [
-            'name' => 'NEW NAME',
-            'email' => 'NEW.NAME@SITE.NET',
+            'title' => 'NEW TITLE',
         ];
 
-        $this->json('PUT', $this->buildUrl($this->user->id), $params, $this->getAuthHeaders())
+        $this->json('PUT', $this->buildUrl($this->discipline->id), $params, $this->getAuthHeaders())
             ->seeJsonStructure(
                 [
                     'result',
@@ -19,8 +18,8 @@ class UpdateTest extends UserControllerTest
                         'id',
                         'created_at',
                         'updated_at',
-                        'name',
-                        'email',
+                        'deleted_at',
+                        'title',
                     ]
                 ]
             )

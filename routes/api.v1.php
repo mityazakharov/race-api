@@ -76,4 +76,13 @@ $router->group(['middleware' => 'auth'], function ()  use ($router) {
         $router->put('/{seasonId}', 'SeasonController@update');
         $router->delete('/{seasonId}', 'SeasonController@destroy');
     });
+
+    // Discipline
+    $router->group(['prefix' => 'disciplines'], function () use ($router) {
+        $router->get('', 'DisciplineController@index');
+        $router->post('', 'DisciplineController@store');
+        $router->get('/{disciplineId}', 'DisciplineController@show');
+        $router->put('/{disciplineId}', 'DisciplineController@update');
+        $router->delete('/{disciplineId}', 'DisciplineController@destroy');
+    });
 });

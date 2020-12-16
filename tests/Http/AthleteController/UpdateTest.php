@@ -7,7 +7,8 @@ class UpdateTest extends AthleteControllerTest
     public function testUpdate(): void
     {
         $params = [
-            ['team_id' => $this->team->id],
+            'first_name' => 'TEST',
+            'team_id' => $this->team->id,
         ];
 
         $this->json('PUT', $this->buildUrl($this->athlete->id), $params, $this->getAuthHeaders())

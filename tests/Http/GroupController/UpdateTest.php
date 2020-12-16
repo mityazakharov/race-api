@@ -7,8 +7,8 @@ class UpdateTest extends GroupControllerTest
     public function testUpdate(): void
     {
         $params = [
-            ['title' => 'NEW TITLE'],
-            ['gender' => 'W'],
+            'title' => 'NEW TITLE',
+            'gender' => 'W',
         ];
 
         $this->json('PUT', $this->buildUrl($this->group->id), $params, $this->getAuthHeaders())
