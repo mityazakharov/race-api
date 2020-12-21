@@ -23,6 +23,18 @@ class Group extends Model
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'title'        => 'string',
+        'year_min'     => 'integer',
+        'year_max'     => 'integer',
+        'gender'       => 'string',
+    ];
+
+    /**
      * Set is_odd flag
      *
      * @param int $value

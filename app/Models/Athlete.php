@@ -35,6 +35,20 @@ class Athlete extends Model
         'rate',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'first_name' => 'string',
+        'last_name'  => 'string',
+        'year'       => 'integer',
+        'gender'     => 'string',
+        'team_id'    => 'integer',
+        'rate'       => 'string',
+    ];
+
     public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
@@ -69,6 +83,4 @@ class Athlete extends Model
             self::RATE_ADULT_1,
         ];
     }
-
-
 }

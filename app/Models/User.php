@@ -25,6 +25,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'name'        => 'string',
+        'email'       => 'string',
+    ];
+
+    /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array

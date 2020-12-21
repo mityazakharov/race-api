@@ -18,4 +18,13 @@ class Discipline extends Model
     protected $fillable = [
         'title',
     ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'title'        => 'string',
+    ];
 }
