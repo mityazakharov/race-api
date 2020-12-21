@@ -85,4 +85,13 @@ $router->group(['middleware' => 'auth'], function ()  use ($router) {
         $router->put('/{disciplineId}', 'DisciplineController@update');
         $router->delete('/{disciplineId}', 'DisciplineController@destroy');
     });
+
+    // Race
+    $router->group(['prefix' => 'races'], function () use ($router) {
+        $router->get('', 'RaceController@index');
+        $router->post('', 'RaceController@store');
+        $router->get('/{raceId}', 'RaceController@show');
+        $router->put('/{raceId}', 'RaceController@update');
+        $router->delete('/{raceId}', 'RaceController@destroy');
+    });
 });

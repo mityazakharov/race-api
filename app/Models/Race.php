@@ -10,13 +10,6 @@ class Race extends Model
 {
     use HasFactory;
 
-    const RATE_YOUNG_3 = '3 юн';
-    const RATE_YOUNG_2 = '2 юн';
-    const RATE_YOUNG_1 = '1 юн';
-    const RATE_ADULT_3 = 'III';
-    const RATE_ADULT_2 = 'II';
-    const RATE_ADULT_1 = 'I';
-
     /**
      * The attributes that are mass assignable.
      *
