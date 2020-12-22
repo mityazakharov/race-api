@@ -44,6 +44,7 @@ class SeasonController
     public function show(int $seasonId): JsonResponse
     {
         $season = Season::findOrFail($seasonId);
+        $season->load('groups:id,title,year_min,year_max,gender,is_odd');
 
         return response()->jsonSuccess($season);
     }
