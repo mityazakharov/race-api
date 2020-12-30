@@ -53,6 +53,7 @@ class Result extends Model
         'status_2'   => 'string',
         'total'      => 'integer',
         'diff'       => 'integer',
+        'place'      => 'integer',
     ];
 
     public function race(): BelongsTo

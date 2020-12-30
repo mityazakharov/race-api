@@ -31,7 +31,7 @@ class CreateResultRequest extends RequestAbstract
             'team_id'    => 'required|exists:teams,id',
             'rate'       => 'in:' . implode(',', Athlete::rates()),
             'group_id'   => 'required|exists:groups,id',
-            'bib'        => 'required|integer|min:1',
+            'bib'        => 'integer|min:1',
             'run_1'      => 'integer|min:1',
             'status_1'   => 'required_with:run_1|in:' . implode(',', Result::statuses()),
             'run_2'      => 'integer|min:1',
