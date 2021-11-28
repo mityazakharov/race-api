@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Group extends Model
@@ -40,9 +41,17 @@ class Group extends Model
      * @param int $value
      * @return void
      */
-    public  function setYearMinAttribute(int $value): void
+    public function setYearMinAttribute(int $value): void
     {
         $this->attributes['year_min'] = $value;
         $this->attributes['is_odd'] = boolval($value % 2);
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function seasons(): BelongsToMany
+    {
+        return $this->belongsToMany(Season::class);
     }
 }

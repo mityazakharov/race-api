@@ -44,6 +44,7 @@ class GroupController
     public function show(int $groupId): JsonResponse
     {
         $group = Group::findOrFail($groupId);
+        $group->load('seasons:id,title,year_min,year_max,is_odd_group');
 
         return response()->jsonSuccess($group);
     }

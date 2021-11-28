@@ -94,4 +94,14 @@ $router->group(['middleware' => 'auth'], function ()  use ($router) {
         $router->put('/{raceId}', 'RaceController@update');
         $router->delete('/{raceId}', 'RaceController@destroy');
     });
+
+    // Result
+    $router->group(['prefix' => 'results'], function () use ($router) {
+        $router->get('/statuses', 'ResultController@statuses');
+        $router->get('', 'ResultController@index');
+        $router->post('', 'ResultController@store');
+        $router->get('/{resultId}', 'ResultController@show');
+        $router->put('/{resultId}', 'ResultController@update');
+        $router->delete('/{resultId}', 'ResultController@destroy');
+    });
 });
